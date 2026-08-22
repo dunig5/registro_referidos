@@ -102,11 +102,9 @@
             const telefono = document.getElementById('ref-telefono').value.trim();
             const ciudad = document.getElementById('ref-ciudad').value.trim();
 
-            // Generar código y link de referido automáticos (configurados por el sistema)
             const codigoGenerado = "REF-" + Math.floor(100000 + Math.random() * 900000);
             const linkGenerado = `https://dunig5.github.io/registro_referidos/?ref=${codigoGenerado}`;
 
-            // Inserción en Supabase incluyendo los campos ocultos de código y link
             const { data, error } = await supabaseClient.from('referidos').insert([{
                 nombre: nombre,
                 cedula: cedula,
@@ -117,8 +115,8 @@
             }]);
 
             if (error) {
-                console.error("Error al guardar:", error);
-                alert("Hubo un error al registrar. Asegúrate de que la tabla 'referidos' tenga las columnas correctas.");
+                console.error("Error de Supabase:", error);
+                alert("Error técnico: " + error.message); // Esto mostrará el mensaje real devuelto por la base de datos
                 btn.disabled = false;
                 btn.innerHTML = `<i data-lucide="user-plus" class="w-4 h-4"></i> COMPLETAR REGISTRO`;
                 lucide.createIcons();
