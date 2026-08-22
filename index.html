@@ -48,7 +48,6 @@
                 <p class="text-xs text-stone-400">Ingresa tus datos para unirte a la red y obtener tu enlace exclusivo.</p>
             </div>
 
-            <!-- Aviso si entró mediante un patrocinador -->
             <div id="banner-patrocinador" class="hidden bg-amber-500/10 border border-amber-500/20 p-3 rounded-xl text-center">
                 <p class="text-[10px] text-amber-400 font-futurista tracking-wider">Estás siendo invitado por el código: <span id="txt-patrocinador" class="font-bold"></span></p>
             </div>
@@ -86,19 +85,15 @@
     <footer class="border-t border-stone-950 bg-black/60 p-4 text-center text-[10px] text-stone-600 font-mono tracking-widest">© 2026 D'UNIG LUXURY ECOSISTEMA. TODOS LOS DERECHOS RESERVADOS.</footer>
 
     <script>
-        const SUPABASE_URL = "https://cmaishgahyzlhszwaozg.supabase.co"; 
-        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNtYWlzaGdhaHl6bGhzendhb3pnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ5MjMxMzEsImV4cCI6MjEwMDQ5OTEzMX0.8JVrpQKocnyZa3qLxsX9ZxjygYy4QY3kp_VSvrL1qNQ"; 
+        const SUPABASE_URL = "https://vcymfspywjabnbddbruh.supabase.co"; 
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZjeW1mc3B5d2phYm5iZGRicnVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ2Njg1MjIsImV4cCI6MjEwMDI0NDUyMn0.bXamCrThn-oGgK_6Ol2w3cSoxUd0pJDHW0_UkPqGEuA"; 
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        let codigoPatrocinador = null;
-
-        // Detectar si el usuario entró con un link de referido
         window.addEventListener('DOMContentLoaded', () => { 
             lucide.createIcons(); 
             const urlParams = new URLSearchParams(window.location.search);
             const ref = urlParams.get('ref');
             if (ref) {
-                codigoPatrocinador = ref;
                 document.getElementById('txt-patrocinador').innerText = ref;
                 document.getElementById('banner-patrocinador').classList.remove('hidden');
             }
@@ -125,8 +120,7 @@
                 telefono: telefono,
                 ciudad: ciudad,
                 codigo_referido: codigoGenerado,
-                link_referido: linkGenerado,
-                patrocinador: codigoPatrocinador || 'Directo'
+                link_referido: linkGenerado
             }]);
 
             if (error) {
