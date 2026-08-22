@@ -21,7 +21,6 @@
 </head>
 <body class="text-stone-200 antialiased min-h-screen flex flex-col justify-between grid-bg relative">
 
-    <!-- HEADER -->
     <header class="bg-black/40 backdrop-blur-xl border-b border-stone-900/80 sticky top-0 z-40 px-4">
         <div class="max-w-4xl mx-auto h-20 flex items-center justify-between">
             <div class="flex items-center gap-3">
@@ -40,7 +39,6 @@
         </div>
     </header>
 
-    <!-- CONTENIDO PRINCIPAL -->
     <main class="max-w-xl w-full mx-auto px-4 py-12 flex-grow flex items-center justify-center relative z-10">
         <div class="glass-panel p-8 rounded-3xl shadow-2xl border border-stone-900 w-full space-y-6">
             
@@ -50,7 +48,11 @@
                 <p class="text-xs text-stone-400">Ingresa tus datos para unirte a la red y obtener tu enlace exclusivo.</p>
             </div>
 
-            <!-- FORMULARIO DE 4 CAMPOS -->
+            <!-- Aviso si entró mediante un patrocinador -->
+            <div id="banner-patrocinador" class="hidden bg-amber-500/10 border border-amber-500/20 p-3 rounded-xl text-center">
+                <p class="text-[10px] text-amber-400 font-futurista tracking-wider">Estás siendo invitado por el código: <span id="txt-patrocinador" class="font-bold"></span></p>
+            </div>
+
             <form id="form-referido" onsubmit="registrarReferido(event)" class="space-y-4">
                 
                 <div class="space-y-1.5">
@@ -81,14 +83,26 @@
         </div>
     </main>
 
-    <!-- FOOTER -->
     <footer class="border-t border-stone-950 bg-black/60 p-4 text-center text-[10px] text-stone-600 font-mono tracking-widest">© 2026 D'UNIG LUXURY ECOSISTEMA. TODOS LOS DERECHOS RESERVADOS.</footer>
 
-    <!-- SCRIPT DE CONEXIÓN CON SUPABASE -->
     <script>
-        const SUPABASE_URL = "https://cmaishgahyzlhszwaozg.supabase.co"; 
-        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNtYWlzaGdhaHl6bGhzendhb3pnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ5MjMxMzEsImV4cCI6MjEwMDQ5OTEzMX0.8JVrpQKocnyZa3qLxsX9ZxjygYy4QY3kp_VSvrL1qNQ"; 
+        const SUPABASE_URL = "https://vcymfspywjabnbddbruh.supabase.co"; 
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZjeW1mc3B5d2phYm5iZGRicnVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ2Njg1MjIsImV4cCI6MjEwMDI0NDUyMn0.bXamCrThn-oGgK_6Ol2w3cSoxUd0pJDHW0_UkPqGEuA"; 
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        let codigoPatrocinador = null;
+
+        // Detectar si el usuario entró con un link de referido
+        window.addEventListener('DOMContentLoaded', () => { 
+            lucide.createIcons(); 
+            const urlParams = new URLSearchParams(window.location.search);
+            const ref = urlParams.get('ref');
+            if (ref) {
+                codigoPatrocinador = ref;
+                document.getElementById('txt-patrocinador').innerText = ref;
+                document.getElementById('banner-patrocinador').classList.remove('hidden');
+            }
+        });
 
         async function registrarReferido(event) {
             event.preventDefault();
@@ -103,7 +117,7 @@
             const ciudad = document.getElementById('ref-ciudad').value.trim();
 
             const codigoGenerado = "REF-" + Math.floor(100000 + Math.random() * 900000);
-            const linkGenerado = `https://dunig5.github.io/registro_referidos/?ref=${codigoGenerado}`;
+            const linkGenerado = `https://dunigluxury.github.io/venezuela147sol/?ref=${codigoGenerado}`;
 
             const { data, error } = await supabaseClient.from('referidos').insert([{
                 nombre: nombre,
@@ -111,27 +125,24 @@
                 telefono: telefono,
                 ciudad: ciudad,
                 codigo_referido: codigoGenerado,
-                link_referido: linkGenerado
+                link_referido: linkGenerado,
+                patrocinador: codigoPatrocinador || 'Directo'
             }]);
 
             if (error) {
                 console.error("Error de Supabase:", error);
-                alert("Error técnico: " + error.message); // Esto mostrará el mensaje real devuelto por la base de datos
+                alert("Error técnico: " + error.message);
                 btn.disabled = false;
                 btn.innerHTML = `<i data-lucide="user-plus" class="w-4 h-4"></i> COMPLETAR REGISTRO`;
                 lucide.createIcons();
             } else {
-                alert(`¡Registro exitoso!\nTu código asignado es: ${codigoGenerado}`);
+                alert(`¡Registro exitoso!\nTu código asignado es: ${codigoGenerado}\nTu enlace es: ${linkGenerado}`);
                 document.getElementById('form-referido').reset();
                 btn.disabled = false;
                 btn.innerHTML = `<i data-lucide="user-plus" class="w-4 h-4"></i> COMPLETAR REGISTRO`;
                 lucide.createIcons();
             }
         }
-
-        window.addEventListener('DOMContentLoaded', () => { 
-            lucide.createIcons(); 
-        });
     </script>
 </body>
 </html>
