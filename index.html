@@ -90,6 +90,16 @@
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNtYWlzaGdhaHl6bGhzendhb3pnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ5MjMxMzEsImV4cCI6MjEwMDQ5OTEzMX0.8JVrpQKocnyZa3qLxsX9ZxjygYy4QY3kp_VSvrL1qNQ"; 
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+        // Función para generar 6 letras mayúsculas aleatorias
+        function generarLetrasAleatorias() {
+            const letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            let resultado = "";
+            for (let i = 0; i < 6; i++) {
+                resultado += letras.charAt(Math.floor(Math.random() * letras.length));
+            }
+            return resultado;
+        }
+
         async function registrarReferido(event) {
             event.preventDefault();
 
@@ -102,8 +112,9 @@
             const telefono = document.getElementById('ref-telefono').value.trim();
             const ciudad = document.getElementById('ref-ciudad').value.trim();
 
-            const codigoGenerado = "REF-" + Math.floor(100000 + Math.random() * 900000);
-            const linkGenerado = `https://dunig5.github.io/registro_referidos/?ref=${codigoGenerado}`;
+            // Genera el código con formato REF- + 6 letras mayúsculas (Ej: REF-HXKPLQ)
+            const codigoGenerado = "REF-" + generarLetrasAleatorias();
+            const linkGenerado = `https://dunigluxury.github.io/venezuela147sol/?ref=${codigoGenerado}`;
 
             const { data, error } = await supabaseClient.from('referidos').insert([{
                 nombre: nombre,
@@ -116,7 +127,7 @@
 
             if (error) {
                 console.error("Error de Supabase:", error);
-                alert("Error técnico: " + error.message); // Esto mostrará el mensaje real devuelto por la base de datos
+                alert("Error técnico: " + error.message);
                 btn.disabled = false;
                 btn.innerHTML = `<i data-lucide="user-plus" class="w-4 h-4"></i> COMPLETAR REGISTRO`;
                 lucide.createIcons();
