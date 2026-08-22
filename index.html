@@ -33,7 +33,7 @@
                         D'UNIG <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-amber-500">LUXURY</span>
                     </h1>
                     <p class="text-[8px] text-amber-500/70 uppercase tracking-[0.25em] font-bold font-futurista">
-                        SISTEMA DE REFERIDOS
+                        PROGRAMA DE REFERIDOS VIP
                     </p>
                 </div>
             </div>
@@ -45,36 +45,36 @@
         <div class="glass-panel p-8 rounded-3xl shadow-2xl border border-stone-900 w-full space-y-6">
             
             <div class="text-center space-y-2">
-                <span class="text-[10px] uppercase tracking-[0.2em] font-futurista font-black text-amber-400 bg-amber-500/5 px-3 py-1 rounded-md border border-amber-500/10">PROGRAMA VIP</span>
-                <h2 class="text-2xl font-black font-futurista text-white tracking-wide uppercase">Registro de Referido</h2>
-                <p class="text-xs text-stone-400">Completa los datos para registrar la recomendación en la red.</p>
+                <span class="text-[10px] uppercase tracking-[0.2em] font-futurista font-black text-amber-400 bg-amber-500/5 px-3 py-1 rounded-md border border-amber-500/10">REGISTRO OFICIAL</span>
+                <h2 class="text-2xl font-black font-futurista text-white tracking-wide uppercase">Nuevo Referido</h2>
+                <p class="text-xs text-stone-400">Ingresa tus datos para unirte a la red y obtener tu enlace exclusivo.</p>
             </div>
 
-            <!-- FORMULARIO -->
+            <!-- FORMULARIO DE 4 CAMPOS -->
             <form id="form-referido" onsubmit="registrarReferido(event)" class="space-y-4">
                 
                 <div class="space-y-1.5">
-                    <label class="text-[9px] uppercase text-stone-400 font-bold tracking-widest block font-futurista">Nombre del Referidor (Quien recomienda)</label>
+                    <label class="text-[9px] uppercase text-stone-400 font-bold tracking-widest block font-futurista">Nombre de Referido</label>
                     <input type="text" id="ref-nombre" required placeholder="Ej. Carlos Pérez" class="w-full bg-stone-900 border border-stone-800 text-xs text-white p-3.5 rounded-xl focus:outline-none focus:border-amber-400/40 font-medium">
                 </div>
 
                 <div class="space-y-1.5">
-                    <label class="text-[9px] uppercase text-stone-400 font-bold tracking-widest block font-futurista">Código o Contacto del Referidor</label>
-                    <input type="text" id="ref-codigo" required placeholder="Ej. +584120000000 o código único" class="w-full bg-stone-900 border border-stone-800 text-xs text-white p-3.5 rounded-xl focus:outline-none focus:border-amber-400/40 font-mono">
+                    <label class="text-[9px] uppercase text-stone-400 font-bold tracking-widest block font-futurista">Cédula de Identidad</label>
+                    <input type="text" id="ref-cedula" required placeholder="Ej. V-26000000" class="w-full bg-stone-900 border border-stone-800 text-xs text-white p-3.5 rounded-xl focus:outline-none focus:border-amber-400/40 font-mono">
                 </div>
 
                 <div class="space-y-1.5">
-                    <label class="text-[9px] uppercase text-stone-400 font-bold tracking-widest block font-futurista">Nombre del Nuevo Cliente (Referido)</label>
-                    <input type="text" id="nuevo-nombre" required placeholder="Ej. María Rodríguez" class="w-full bg-stone-900 border border-stone-800 text-xs text-white p-3.5 rounded-xl focus:outline-none focus:border-amber-400/40 font-medium">
+                    <label class="text-[9px] uppercase text-stone-400 font-bold tracking-widest block font-futurista">Número de Teléfono</label>
+                    <input type="tel" id="ref-telefono" required placeholder="Ej. 04120000000" class="w-full bg-stone-900 border border-stone-800 text-xs text-white p-3.5 rounded-xl focus:outline-none focus:border-amber-400/40 font-mono">
                 </div>
 
                 <div class="space-y-1.5">
-                    <label class="text-[9px] uppercase text-stone-400 font-bold tracking-widest block font-futurista">Teléfono / WhatsApp del Referido</label>
-                    <input type="tel" id="nuevo-telefono" required placeholder="Ej. 584240000000" class="w-full bg-stone-900 border border-stone-800 text-xs text-white p-3.5 rounded-xl focus:outline-none focus:border-amber-400/40 font-mono">
+                    <label class="text-[9px] uppercase text-stone-400 font-bold tracking-widest block font-futurista">Ciudad</label>
+                    <input type="text" id="ref-ciudad" required placeholder="Ej. Mérida" class="w-full bg-stone-900 border border-stone-800 text-xs text-white p-3.5 rounded-xl focus:outline-none focus:border-amber-400/40 font-medium">
                 </div>
 
                 <button type="submit" id="btn-enviar" class="w-full bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-black font-futurista font-black py-4 px-6 rounded-xl text-xs uppercase tracking-[0.15em] flex items-center justify-center gap-2 cursor-pointer shadow-lg transition-all duration-300 mt-6">
-                    <i data-lucide="user-plus" class="w-4 h-4"></i> REGISTRAR REFERIDO
+                    <i data-lucide="user-plus" class="w-4 h-4"></i> COMPLETAR REGISTRO
                 </button>
             </form>
 
@@ -86,8 +86,8 @@
 
     <!-- SCRIPT DE CONEXIÓN CON SUPABASE -->
     <script>
-        const SUPABASE_URL = "https://cmaishgahyzlhszwaozg.supabase.co"; 
-        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNtYWlzaGdhaHl6bGhzendhb3pnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ5MjMxMzEsImV4cCI6MjEwMDQ5OTEzMX0.8JVrpQKocnyZa3qLxsX9ZxjygYy4QY3kp_VSvrL1qNQ"; 
+        const SUPABASE_URL = "https://vcymfspywjabnbddbruh.supabase.co"; 
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZjeW1mc3B5d2phYm5iZGRicnVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ2Njg1MjIsImV4cCI6MjEwMDI0NDUyMn0.bXamCrThn-oGgK_6Ol2w3cSoxUd0pJDHW0_UkPqGEuA"; 
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         async function registrarReferido(event) {
@@ -97,31 +97,36 @@
             btn.disabled = true;
             btn.innerText = "REGISTRANDO...";
 
-            const referidorNombre = document.getElementById('ref-nombre').value.trim();
-            const referidorCodigo = document.getElementById('ref-codigo').value.trim();
-            const referidoNombre = document.getElementById('nuevo-nombre').value.trim();
-            const referidoTelefono = document.getElementById('nuevo-telefono').value.trim();
+            const nombre = document.getElementById('ref-nombre').value.trim();
+            const cedula = document.getElementById('ref-cedula').value.trim();
+            const telefono = document.getElementById('ref-telefono').value.trim();
+            const ciudad = document.getElementById('ref-ciudad').value.trim();
 
-            // Inserción en la tabla 'referidos' de Supabase
+            // Generar código y link de referido automáticos (configurados por el sistema)
+            const codigoGenerado = "REF-" + Math.floor(100000 + Math.random() * 900000);
+            const linkGenerado = `https://dunig5.github.io/registro_referidos/?ref=${codigoGenerado}`;
+
+            // Inserción en Supabase incluyendo los campos ocultos de código y link
             const { data, error } = await supabaseClient.from('referidos').insert([{
-                referidor_nombre: referidorNombre,
-                referidor_codigo: referidorCodigo,
-                referido_nombre: referidoNombre,
-                referido_telefono: referidoTelefono,
-                estado: 'Pendiente'
+                nombre: nombre,
+                cedula: cedula,
+                telefono: telefono,
+                ciudad: ciudad,
+                codigo_referido: codigoGenerado,
+                link_referido: linkGenerado
             }]);
 
             if (error) {
                 console.error("Error al guardar:", error);
-                alert("Hubo un error al registrar el referido. Verifica que la tabla 'referidos' exista en Supabase.");
+                alert("Hubo un error al registrar. Asegúrate de que la tabla 'referidos' tenga las columnas correctas.");
                 btn.disabled = false;
-                btn.innerHTML = `<i data-lucide="user-plus" class="w-4 h-4"></i> REGISTRAR REFERIDO`;
+                btn.innerHTML = `<i data-lucide="user-plus" class="w-4 h-4"></i> COMPLETAR REGISTRO`;
                 lucide.createIcons();
             } else {
-                alert("¡Referido registrado con éxito en el sistema!");
+                alert(`¡Registro exitoso!\nTu código asignado es: ${codigoGenerado}`);
                 document.getElementById('form-referido').reset();
                 btn.disabled = false;
-                btn.innerHTML = `<i data-lucide="user-plus" class="w-4 h-4"></i> REGISTRAR REFERIDO`;
+                btn.innerHTML = `<i data-lucide="user-plus" class="w-4 h-4"></i> COMPLETAR REGISTRO`;
                 lucide.createIcons();
             }
         }
