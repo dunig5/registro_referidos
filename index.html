@@ -73,12 +73,18 @@
                     <input type="email" id="reg-correo" required placeholder="tucorreo@dominio.com" class="w-full bg-[#1f1f1f] border border-[#333333] text-xs text-white p-3.5 rounded-xl focus:outline-none focus:border-white font-mono">
                 </div>
 
-                <!-- CAMPO DE REFERIDO EDITABLE -->
+                <!-- CAMPO DE CÓDIGO DE REFERIDO (SOLO CÓDIGO LIMPIO) -->
                 <div class="space-y-1">
-                    <label class="text-[10px] font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1">
-                        <i data-lucide="gift" class="w-3.5 h-3.5"></i> Código de Referido (Editable)
+                    <label class="text-[10px] font-bold uppercase tracking-wider text-amber-400 flex items-center justify-between">
+                        <span class="flex items-center gap-1"><i data-lucide="gift" class="w-3.5 h-3.5"></i> Tu Código de Referido</span>
+                        <span class="text-[9px] text-gray-400 font-normal">Copia y pega este código</span>
                     </label>
-                    <input type="text" id="input-referido" placeholder="Ej. REF-123456 o NINGUNO" class="w-full bg-[#1f1f1f] border border-[#333333] text-xs text-amber-400 p-3.5 rounded-xl font-mono focus:outline-none focus:border-white">
+                    <div class="flex gap-2">
+                        <input type="text" id="input-referido" readonly placeholder="VIP" class="w-full bg-[#1f1f1f] border border-[#333333] text-xs text-amber-400 p-3.5 rounded-xl font-mono font-bold focus:outline-none focus:border-white">
+                        <button type="button" onclick="copiarCodigoReferidoDirecto()" class="bg-[#222222] hover:bg-[#333333] border border-[#333333] text-white px-4 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center" title="Copiar código">
+                            <i data-lucide="copy" class="w-4 h-4"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <button type="submit" class="w-full bg-white hover:bg-gray-200 text-black font-bold py-4 rounded-xl text-xs uppercase tracking-widest cursor-pointer shadow-lg transition-all">
@@ -112,10 +118,10 @@
                 </div>
 
                 <div class="flex items-center gap-2">
-                    <!-- BOTÓN PEQUEÑO DE COMPARTIR APP EN LA PARTE SUPERIOR -->
-                    <button onclick="compartirAplicacion()" class="bg-[#1b1b1b] border border-[#333333] hover:border-white px-2.5 py-1.5 rounded-full flex items-center gap-1.5 cursor-pointer transition-all text-emerald-400" title="Compartir App">
+                    <!-- BOTÓN PEQUEÑO DE COMPARTIR CÓDIGO EN LA PARTE SUPERIOR -->
+                    <button onclick="compartirAplicacion()" class="bg-[#1b1b1b] border border-[#333333] hover:border-white px-2.5 py-1.5 rounded-full flex items-center gap-1.5 cursor-pointer transition-all text-emerald-400" title="Compartir mi código">
                         <i data-lucide="share-2" class="w-3.5 h-3.5"></i>
-                        <span class="text-[10px] font-bold uppercase hidden sm:inline">Compartir</span>
+                        <span class="text-[10px] font-bold uppercase hidden sm:inline">Referir</span>
                     </button>
 
                     <button onclick="abrirModalEdicionDatos()" class="bg-[#1b1b1b] border border-[#333333] hover:border-white p-2 rounded-full flex items-center justify-center cursor-pointer transition-all text-gray-300" title="Editar mis datos">
@@ -516,13 +522,13 @@
             const correo = document.getElementById('reg-correo').value.trim();
             
             const inputRef = document.getElementById('input-referido');
-            const codigoReferido = inputRef ? inputRef.value.trim().toUpperCase() : 'NINGUNO';
+            const codigoReferido = inputRef ? inputRef.value.trim().toUpperCase() : 'VIP';
 
             if (!nombre || !whatsapp || !correo) { alert("Completa todos los campos obligatorios."); return; }
             
-            const datosCliente = { nombre, whatsapp, correo, codigo_referido: codigoReferido || 'NINGUNO' };
+            const datosCliente = { nombre, whatsapp, correo, codigo_referido: codigoReferido || 'VIP' };
 
-            if (codigoReferido && codigoReferido !== 'NINGUNO') {
+            if (codigoReferido && codigoReferido !== 'VIP') {
                 localStorage.setItem('dunig_ref_code', codigoReferido);
                 localStorage.setItem('codigo_referido_activo', codigoReferido);
             }
@@ -530,10 +536,10 @@
             try {
                 const clienteAnterior = JSON.parse(localStorage.getItem('dunig_cliente_registrado') || '{}');
                 if (clienteAnterior.correo) {
-                    const { error: updateError } = await supabaseClient.from('clientes_vip').update({ nombre, whatsapp, correo, codigo_referido: codigoReferido || 'NINGUNO' }).eq('correo', clienteAnterior.correo);
-                    if (updateError) await supabaseClient.from('clientes_vip').insert([{ nombre, whatsapp, correo, codigo_referido: codigoReferido || 'NINGUNO' }]);
+                    const { error: updateError } = await supabaseClient.from('clientes_vip').update({ nombre, whatsapp, correo, codigo_referido: codigoReferido || 'VIP' }).eq('correo', clienteAnterior.correo);
+                    if (updateError) await supabaseClient.from('clientes_vip').insert([{ nombre, whatsapp, correo, codigo_referido: codigoReferido || 'VIP' }]);
                 } else {
-                    await supabaseClient.from('clientes_vip').insert([{ nombre, whatsapp, correo, codigo_referido: codigoReferido || 'NINGUNO' }]);
+                    await supabaseClient.from('clientes_vip').insert([{ nombre, whatsapp, correo, codigo_referido: codigoReferido || 'VIP' }]);
                 }
             } catch (err) {}
 
@@ -829,7 +835,7 @@
         }
 
         // ==========================================
-        // GESTIÓN ROBUSTA DE DEEP LINKS Y REFERIDOS
+        // GESTIÓN DE CÓDIGO DE REFERIDO (SOLO CÓDIGO)
         // ==========================================
         async function detectarReferidoPorDeepLink() {
             if (App) {
@@ -882,7 +888,7 @@
         }
 
         function aplicarYFijarCodigoReferido() {
-            let codigoFinal = '';
+            let codigoFinal = 'VIP'; // Código por defecto limpio
 
             const urlParams = new URLSearchParams(window.location.search);
             const codigoRefUrl = urlParams.get('ref') || urlParams.get('referido');
@@ -890,11 +896,11 @@
             
             if (codigoRefUrl && codigoRefUrl.trim() !== '') {
                 codigoFinal = codigoRefUrl.trim().toUpperCase();
-            } else if (clienteGuardado.codigo_referido && clienteGuardado.codigo_referido !== 'NINGUNO' && clienteGuardado.codigo_referido !== '') {
+            } else if (clienteGuardado.codigo_referido && clienteGuardado.codigo_referido !== 'VIP' && clienteGuardado.codigo_referido !== '') {
                 codigoFinal = clienteGuardado.codigo_referido;
-            } else if (localStorage.getItem('dunig_ref_code') && localStorage.getItem('dunig_ref_code') !== 'NINGUNO') {
+            } else if (localStorage.getItem('dunig_ref_code') && localStorage.getItem('dunig_ref_code') !== 'VIP') {
                 codigoFinal = localStorage.getItem('dunig_ref_code');
-            } else if (localStorage.getItem('codigo_referido_activo') && localStorage.getItem('codigo_referido_activo') !== 'NINGUNO') {
+            } else if (localStorage.getItem('codigo_referido_activo') && localStorage.getItem('codigo_referido_activo') !== 'VIP') {
                 codigoFinal = localStorage.getItem('codigo_referido_activo');
             }
 
@@ -914,6 +920,20 @@
             }
         }
 
+        window.copiarCodigoReferidoDirecto = function() {
+            const inputRef = document.getElementById('input-referido');
+            if (!inputRef || !inputRef.value) return;
+            const codigo = inputRef.value.trim();
+            
+            navigator.clipboard.writeText(codigo).then(() => {
+                alert("¡Código de referido '" + codigo + "' copiado al portapapeles con éxito!");
+            }).catch(() => {
+                inputRef.select();
+                document.execCommand('copy');
+                alert("¡Código copiado: " + codigo + "!");
+            });
+        }
+
         window.compartirAplicacion = function() {
             const urlActual = window.location.href.split('?')[0];
             const codigoActual = document.getElementById('input-referido').value || localStorage.getItem('dunig_ref_code') || 'VIP';
@@ -922,12 +942,12 @@
             if (navigator.share) {
                 navigator.share({
                     title: "D'UNIG SHOPPING",
-                    text: "¡Visita la tienda oficial y haz tus pedidos VIP!",
+                    text: `¡Usa mi código de referido [ ${codigoActual} ] en D'UNIG SHOPPING!`,
                     url: linkCompartir
                 }).catch(() => {});
             } else {
                 navigator.clipboard.writeText(linkCompartir);
-                alert("¡Enlace de referido copiado al portapapeles!\n" + linkCompartir);
+                alert("¡Enlace de invitación con tu código copiado al portapapeles!\n" + linkCompartir);
             }
         }
 
@@ -983,7 +1003,7 @@
             const clienteLocal = JSON.parse(clienteRegistradoValidacion);
             
             const inputRefElem = document.getElementById('input-referido');
-            const codigoReferidoCliente = inputRefElem ? inputRefElem.value.trim().toUpperCase() : (clienteLocal.codigo_referido || localStorage.getItem('dunig_ref_code') || 'NINGUNO');
+            const codigoReferidoCliente = inputRefElem ? inputRefElem.value.trim().toUpperCase() : (clienteLocal.codigo_referido || localStorage.getItem('dunig_ref_code') || 'VIP');
             
             let totalGeneral = carrito.reduce((a, b) => a + b.precio, 0);
             let lista = carrito.map(i => `• ${i.titulo} ($${i.precio.toFixed(2)})`).join('\n');
