@@ -169,12 +169,12 @@
             console.log("Registrando en Supabase:", { nombre, cedula, telefono, ciudad, codigo_referido: codigoGenerado });
 
             const { data, error } = await supabaseClient.from('referidos').insert([{
-                nombre: nombre,
-                cedula: cedula,
-                telefono: telefono,
-                ciudad: ciudad,
-                codigo_referido: codigoGenerado
-            }]).select();
+    nombre: nombre,
+    cedula: cedula,
+    telefono: telefono,
+    ciudad: ciudad,
+    codigo_referido: codigoGenerado
+}]).select();
 
             if (error) {
                 console.error("Error técnico de Supabase:", error);
