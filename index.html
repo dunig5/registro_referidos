@@ -96,7 +96,7 @@
                 </button>
             </form>
 
-            <!-- Sección de Éxito (Muestra exclusivamente el código y el botón de copiar) -->
+            <!-- Sección de Éxito -->
             <div id="seccion-exito" class="hidden space-y-6 text-center py-6">
                 <div class="w-20 h-20 bg-gradient-to-br from-orange-500/20 to-amber-500/20 border border-amber-500/40 rounded-2xl mx-auto flex items-center justify-center text-amber-400 shadow-lg glow-orange-gold">
                     <i data-lucide="sparkles" class="w-9 h-9 animate-pulse"></i>
@@ -128,7 +128,6 @@
 
     <!-- Lógica de Conexión y Generación -->
     <script>
-        // CONFIGURA TUS CREDENCIALES DE SUPABASE AQUÍ
         const SUPABASE_URL = "https://mkewwlmeikixpvfayisj.supabase.co"; 
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1rZXd3bG1laWtpeHB2ZmF5aXNqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk3Mzg5NTAsImV4cCI6MjEwNTMxNDk1MH0.xUm7b8j4EGjHtsrBP9DgBURKRhrsPwOxhwKLCAMxZ1o"; 
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -137,7 +136,6 @@
             lucide.createIcons(); 
         });
 
-        // Función para generar código exacto de 7 números y 3 letras (Ej: 4928192XYZ)
         function generarCodigoVIP() {
             let numeros = "";
             for (let i = 0; i < 7; i++) {
@@ -148,7 +146,7 @@
             for (let i = 0; i < 3; i++) {
                 letras += letrasPosibles.charAt(Math.floor(Math.random() * letrasPosibles.length));
             }
-            return numeros + letras; // Ejemplo: 4928192ABC
+            return numeros + letras; 
         }
 
         async function registrarReferido(event) {
@@ -163,18 +161,16 @@
             const cedula = document.getElementById('ref-cedula').value.trim();
             const telefono = document.getElementById('ref-telefono').value.trim();
             const ciudad = document.getElementById('ref-ciudad').value.trim();
-
             const codigoGenerado = generarCodigoVIP();
 
-            console.log("Registrando en Supabase:", { nombre, cedula, telefono, ciudad, codigo_referido: codigoGenerado });
-
-            const { data, error } = await supabaseClient.from('referidos').insert([{
-    nombre: nombre,
-    cedula: cedula,
-    telefono: telefono,
-    ciudad: ciudad,
-    codigo_referido: codigoGenerado
-}]).select();
+            // Apuntando a la nueva tabla limpia 'afiliados_referidos'
+            const { data, error } = await supabaseClient.from('afiliados_referidos').insert([{
+                nombre: nombre,
+                cedula: cedula,
+                telefono: telefono,
+                ciudad: ciudad,
+                codigo_referido: codigoGenerado
+            }]).select();
 
             if (error) {
                 console.error("Error técnico de Supabase:", error);
