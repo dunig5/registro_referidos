@@ -163,7 +163,7 @@
             const ciudad = document.getElementById('ref-ciudad').value.trim();
             const codigoGenerado = generarCodigoVIP();
 
-            // Apuntando a la nueva tabla limpia 'afiliados_referidos'
+            // Sincronizado estrictamente con la tabla 'afiliados_referidos'
             const { data, error } = await supabaseClient.from('afiliados_referidos').insert([{
                 nombre: nombre,
                 cedula: cedula,
