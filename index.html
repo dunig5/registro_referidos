@@ -80,7 +80,7 @@
                 </button>
             </form>
 
-            <!-- Sección de Éxito (Muestra únicamente el código y botón de copiar) -->
+            <!-- Sección de Éxito (Oculta por defecto, muestra solo el código) -->
             <div id="seccion-exito" class="hidden space-y-6 text-center py-4">
                 <div class="w-16 h-16 bg-amber-500/10 border border-amber-500/30 rounded-2xl mx-auto flex items-center justify-center text-amber-400 glow-gold">
                     <i data-lucide="check-circle-2" class="w-8 h-8"></i>
@@ -136,22 +136,24 @@
 
             const codigoGenerado = "REF-" + Math.floor(100000 + Math.random() * 900000);
 
-            // Inserción exacta a Supabase sin el campo link_referido[cite: 10]
+            console.log("Intentando guardar:", { nombre, cedula, telefono, ciudad, codigo_referido: codigoGenerado });
+
             const { data, error } = await supabaseClient.from('referidos').insert([{
                 nombre: nombre,
                 cedula: cedula,
                 telefono: telefono,
                 ciudad: ciudad,
                 codigo_referido: codigoGenerado
-            }]);
+            }]).select(); // Forzar a Supabase a devolver el registro creado[cite: 12]
 
             if (error) {
-                console.error("Error de Supabase:", error);
+                console.error("Error detallado de Supabase:", error);
                 alert("Error técnico: " + error.message);
                 btn.disabled = false;
                 btn.innerHTML = `<i data-lucide="user-plus" class="w-4 h-4"></i> COMPLETAR REGISTRO`;
                 lucide.createIcons();
             } else {
+                console.log("Respuesta exitosa de Supabase:", data);
                 // Ocultar formulario y mostrar tarjeta de éxito con el código
                 document.getElementById('form-referido').classList.add('hidden');
                 document.getElementById('codigo-generado-txt').innerText = codigoGenerado;
