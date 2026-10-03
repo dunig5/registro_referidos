@@ -80,7 +80,7 @@
                 </button>
             </form>
 
-            <!-- Sección de Éxito (Oculta por defecto, muestra solo el código) -->
+            <!-- Sección de Éxito (Muestra únicamente el código y botón de copiar) -->
             <div id="seccion-exito" class="hidden space-y-6 text-center py-4">
                 <div class="w-16 h-16 bg-amber-500/10 border border-amber-500/30 rounded-2xl mx-auto flex items-center justify-center text-amber-400 glow-gold">
                     <i data-lucide="check-circle-2" class="w-8 h-8"></i>
@@ -135,15 +135,14 @@
             const ciudad = document.getElementById('ref-ciudad').value.trim();
 
             const codigoGenerado = "REF-" + Math.floor(100000 + Math.random() * 900000);
-            const linkGenerado = `https://dunigluxury.github.io/dunig-luxury/?ref=${codigoGenerado}`; 
 
+            // Inserción exacta a Supabase sin el campo link_referido[cite: 10]
             const { data, error } = await supabaseClient.from('referidos').insert([{
                 nombre: nombre,
                 cedula: cedula,
                 telefono: telefono,
                 ciudad: ciudad,
-                codigo_referido: codigoGenerado,
-                link_referido: linkGenerado
+                codigo_referido: codigoGenerado
             }]);
 
             if (error) {
