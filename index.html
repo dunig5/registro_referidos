@@ -12,7 +12,6 @@
         body { font-family: 'Plus Jakarta Sans', sans-serif; background: radial-gradient(circle at 50% 0%, #1c1917 0%, #0c0a09 100%); background-color: #030202; }
         .font-futurista { font-family: 'Orbitron', sans-serif; }
         .glow-gold { box-shadow: 0 0 25px rgba(229, 193, 88, 0.15); }
-        .text-gold { color: #e5c158; text-shadow: 0 0 12px rgba(229, 193, 88, 0.2); }
         .glass-panel { background: linear-gradient(135deg, rgba(28, 25, 23, 0.45) 0%, rgba(12, 10, 9, 0.6) 100%); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.02); }
         .grid-bg { background-image: linear-gradient(rgba(229, 193, 88, 0.01) 1px, transparent 1px), linear-gradient(90deg, rgba(229, 193, 88, 0.01) 1px, transparent 1px); background-size: 32px 32px; }
         ::-webkit-scrollbar { width: 4px; }
@@ -80,7 +79,7 @@
                 </button>
             </form>
 
-            <!-- Sección de Éxito (Oculta por defecto, muestra solo el código) -->
+            <!-- Sección de Éxito (Muestra únicamente el código y botón de copiar) -->
             <div id="seccion-exito" class="hidden space-y-6 text-center py-4">
                 <div class="w-16 h-16 bg-amber-500/10 border border-amber-500/30 rounded-2xl mx-auto flex items-center justify-center text-amber-400 glow-gold">
                     <i data-lucide="check-circle-2" class="w-8 h-8"></i>
@@ -108,8 +107,9 @@
     <footer class="border-t border-stone-950 bg-black/60 p-4 text-center text-[10px] text-stone-600 font-mono tracking-widest">© 2026 D'UNIG LUXURY ECOSISTEMA. TODOS LOS DERECHOS RESERVADOS.</footer>
 
     <script>
-        const SUPABASE_URL = "https://mkewwlmeikixpvfayisj.supabase.co"; 
-        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1rZXd3bG1laWtpeHB2ZmF5aXNqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk3Mzg5NTAsImV4cCI6MjEwNTMxNDk1MH0.xUm7b8j4EGjHtsrBP9DgBURKRhrsPwOxhwKLCAMxZ1o"; 
+        // REEMPLAZA ESTAS CREDENCIALES CON LAS DE TU PROYECTO REAL DE SUPABASE
+        const SUPABASE_URL = "https://TU-PROYECTO.supabase.co"; 
+        const SUPABASE_ANON_KEY = "TU-ANON-KEY-AQUI"; 
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         window.addEventListener('DOMContentLoaded', () => { 
@@ -136,7 +136,7 @@
 
             const codigoGenerado = "REF-" + Math.floor(100000 + Math.random() * 900000);
 
-            console.log("Intentando guardar:", { nombre, cedula, telefono, ciudad, codigo_referido: codigoGenerado });
+            console.log("Intentando guardar en Supabase:", { nombre, cedula, telefono, ciudad, codigo_referido: codigoGenerado });
 
             const { data, error } = await supabaseClient.from('referidos').insert([{
                 nombre: nombre,
@@ -144,17 +144,16 @@
                 telefono: telefono,
                 ciudad: ciudad,
                 codigo_referido: codigoGenerado
-            }]).select(); // Forzar a Supabase a devolver el registro creado[cite: 12]
+            }]).select();
 
             if (error) {
                 console.error("Error detallado de Supabase:", error);
-                alert("Error técnico: " + error.message);
+                alert("Error técnico al registrar: " + error.message);
                 btn.disabled = false;
                 btn.innerHTML = `<i data-lucide="user-plus" class="w-4 h-4"></i> COMPLETAR REGISTRO`;
                 lucide.createIcons();
             } else {
-                console.log("Respuesta exitosa de Supabase:", data);
-                // Ocultar formulario y mostrar tarjeta de éxito con el código
+                console.log("¡Guardado exitoso en Supabase!", data);
                 document.getElementById('form-referido').classList.add('hidden');
                 document.getElementById('codigo-generado-txt').innerText = codigoGenerado;
                 document.getElementById('seccion-exito').classList.remove('hidden');
